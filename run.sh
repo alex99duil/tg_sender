@@ -2,6 +2,7 @@
 
 function install(){
     python -m venv env
+    source ./env/bin/activate
     python -m pip install --upgrade pip
     python -m pip install -r requirements.txt
 }
@@ -11,7 +12,7 @@ function run() {
     python main.py
 }
 
-if [ ! -d "$env"]; then
+if [ ! -d env ]; then
     install
 fi
 
