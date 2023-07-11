@@ -135,6 +135,8 @@ async def main():
         1711979550,
     ]
     while True:
+        # user_chats = await client.get_dialogs()
+        # print(user_chats[0].id)
         for chat_id in chat_ids:
             try:
                 await client.send_message(
