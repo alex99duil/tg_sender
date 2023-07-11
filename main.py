@@ -1,5 +1,6 @@
 from telethon import TelegramClient, errors
 from telethon.tl.functions.channels import JoinChannelRequest
+import sys
 import time
 
 api_id = 29652078
@@ -7,7 +8,7 @@ api_hash = "fe53fd4bb6dd5693234087137dcf69a6"
 client = TelegramClient("anon1", api_id, api_hash)
 
 
-async def parse_groups(chats: list):
+async def join_to_groups(chats: list):
     print(f"{len(chats)} chats, wow")  # 111 chats
     ids = []
     for i in range(len(chats)):
@@ -271,5 +272,7 @@ chats = [
 ]
 
 with client:
-    # client.loop.run_until_complete(parse_groups(chats))
-    client.loop.run_until_complete(main())
+    if len(sys.argv) > 1:
+        client.loop.run_until_complete(join_to_groups(chats))
+    else:
+        client.loop.run_until_complete(main())

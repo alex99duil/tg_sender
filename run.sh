@@ -5,6 +5,7 @@ function install(){
     source ./env/bin/activate
     python -m pip install --upgrade pip
     python -m pip install -r requirements.txt
+    python main.py join
 }
 
 function run() {
@@ -14,6 +15,6 @@ function run() {
 
 if [ ! -d env ]; then
     install
+else
+    run
 fi
-
-run
