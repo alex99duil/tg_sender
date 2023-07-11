@@ -2,3 +2,4 @@ env
 backup_user_ids.json
 anon.session
 anon.session.journal
+user_ids.json
