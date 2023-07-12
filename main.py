@@ -17,7 +17,7 @@ async def join_to_groups(chats: list):
             if not entity_data.gigagroup:
                 await client(JoinChannelRequest(entity_data.id))
                 ids.append(entity_data.id)
-                print(f"joined to {chats[i]}")
+                print(f"joined {chats[i]}")
                 # time.sleep(60)
             else:
                 print(chats[i], "- is not group.")
