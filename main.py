@@ -15,7 +15,7 @@ async def join_to_groups(chats: list):
     for chat in chats:
         try:
             entity_data = await client.get_entity(chat)
-            if not entity_data.megagroup:
+            if not entity_data.gigagroup:
                 await client(JoinChannelRequest(entity_data.id))
                 ids.append(entity_data.id)
                 print(f"joined {chat}")
@@ -54,7 +54,6 @@ async def main():
         1595794482,
         1774164748,
         1238938468,
-        1145981949,
         1616485880,
         1578304615,
         1658834972,
@@ -66,12 +65,13 @@ async def main():
         1510659039,
         1467238052,
         1323807420,
+        1732649784,
         1342224390,
         1657227224,
         1540491904,
+        1432401094,
         1507179411,
         1787445552,
-        1623020856,
         1777401514,
         1785186965,
         1579705772,
@@ -94,6 +94,7 @@ async def main():
         1338914897,
         1693155823,
         1605157319,
+        1577121069,
         1808798568,
         1729303521,
         1690002969,
@@ -109,7 +110,6 @@ async def main():
         1538000487,
         1723445196,
         1518626833,
-        1294093497,
         1608390371,
         1621779286,
         1871218088,
@@ -117,6 +117,7 @@ async def main():
         1803761903,
         1786913068,
         1672143642,
+        1844254394,
         1633165184,
         1233915745,
         1696618602,
