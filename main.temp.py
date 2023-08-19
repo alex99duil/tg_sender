@@ -2,20 +2,18 @@ from telethon import TelegramClient, errors
 from telethon.tl.functions.channels import JoinChannelRequest
 import sys
 import time
+import gc
+gc.enable()
 
 api_id = 29652078
 api_hash = "fe53fd4bb6dd5693234087137dcf69a6"
-
-if len(sys.argv) > 1:
-    account = sys.argv[1]
-else:
-    account = "anon3"
-
-client = TelegramClient(account, api_id, api_hash)
-# anon - swiatiymykolay 3.0 ###osnova
-# anon1 - zeitgeist
-# anon3 - swiatiymykilay 2.0
-# anon_second_acc - swiatiymykolay 1.0
+#client = TelegramClient("anon_second_acc", api_id, api_hash)
+client = TelegramClient(sys.argv[1], api_id, api_hash)
+client.session.save_entities = False
+#anon - swiatiymykolay 3.0 ###osnova
+#anon1 - zeitgeist
+#anon3 - swiatiymykilay 2.0
+#anon_second_acc - swiatiymykolay 1.0
 
 
 async def join_to_groups(chats: list):
@@ -270,6 +268,7 @@ async def send_message():
                 "✅Куплю документы под pay pal✅\n✅Нужно фото айди или заграна и выписка из привата, моно или а банка на УКР языке✅\n✅Оплата 200грн✅\n✅НУЖНО МНОГО✅\n✅Писать в ЛС, отзывы в БИО✅",
             )
             print("sent to", chat_id)
+            time.sleep(3)
         except Exception as e:
             print(str(e))
             # await client.send_message("me", str(e))
@@ -522,12 +521,12 @@ chat_list = [
     "no_scam_verification",
 ]
 
-with client:
+with client:       
     if len(sys.argv) == 3:
         if sys.argv[2] == "join":
             client.loop.run_until_complete(join_to_groups(chat_list))
             client.loop.run_until_complete(send_message())
         else:
             client.loop.run_until_complete(send_message())
-    else:
+    else:          
         client.loop.run_until_complete(send_message())

@@ -11,8 +11,11 @@ function install(){
 }
 
 function run() {
-    source ./env/bin/activate
-    python3 main.py
+    while true
+    do
+        source ./env/bin/activate
+        python3 main.py anon3.session join
+    done
 }
 
 if [ ! -d env ]; then
