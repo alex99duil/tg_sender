@@ -14,7 +14,9 @@ function run() {
     while true
     do
         source ./env/bin/activate
-        python3 main.py anon3.session join
+        python3 main.py anon3.session
+        # python3 main.py ya.session
+        sleep 3600
     done
 }
 
