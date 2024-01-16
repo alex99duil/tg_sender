@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from telethon import TelegramClient, errors
 from telethon.tl.functions.channels import JoinChannelRequest
+import logging
 import argparse
 import time
 
@@ -15,13 +16,31 @@ parser.add_argument(
     '--session',
     help='name for session file',
     type=str,
-    default='ya.session',
+    default='sessions/ya.session',
+)
+# parser.add_argument('--log', help='path to log')
+parser.add_argument(
+    '--join',
+    '-j',
+    help='join to groups and then send messages',
+    action='store_true',
 )
 parser.add_argument(
-    '--join', '-j', help='join to groups and then send messages', action='store_true'
+    '-m',
+    '--message',
+    help='specify the message',
+    default='⚪️КУПЛЮ⚪️\n🏦IziBANK - 200грн💳\n🏦MONOBANK - 300грн💳\n🏦Возьму на вериф PayPal, только те кто не делал, мануал даю и помогу пройти вериф, оплата 400грн💳\n☯️Отзывы в Био☯️\n✅Гарант+✅\n✍️ПИСАТЬ В ЛС✍️',
 )
-parser.add_argument('-m', '--message', help='specify the message')
 args = parser.parse_args()
+
+logging.basicConfig(
+    # filename=f'/tmp/{args.session}.log',
+    filename='/tmp/tg_sender.log',
+    # filemode='a',
+    format='%(asctime)s %(levelname)s %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    level=logging.INFO,
+)
 
 client = TelegramClient(args.session, api_id, api_hash)
 # anon - swiatiymykolay 3.0 ###osnova
@@ -32,25 +51,32 @@ client = TelegramClient(args.session, api_id, api_hash)
 
 async def join_to_groups(chats: list):
     print(f'{len(chats)} chats, wow')  # 111 chats
+    logging.info(f'length of the list of groups to join - {len(chats)}')
     ids = []
 
     for chat in chats:
         try:
             entity_data = await client.get_entity(chat)
             if not getattr(entity_data, 'gigagroup'):
-            # if not entity_data.gigagroup:
+                # if not entity_data.gigagroup:
                 await client(JoinChannelRequest(entity_data.id))
                 ids.append(entity_data.id)
                 print(f'joined {chat}')
             else:
+                logging.info(f'chat {chat} is not a group')
                 print(chats, '- is not group.')
         except errors.FloodWaitError as e:
             print('Have to sleep', e.seconds, 'seconds')
+            logging.error(f'{chat} chat. have to sleep: {e.seconds}')
             time.sleep(e.seconds)
         except Exception as e:
+            logging.error(f'{chat} chat: {e}')
             print('ERROR!!!', chat, e)
 
     print(f'FINAL VER of list({len(ids)}): {ids}')
+    logging.info(
+        f'list of groups to which you have successfully joined({len(ids)}) - {ids}'
+    )
 
 
 async def send_message():
@@ -160,22 +186,20 @@ async def send_message():
         1218529532,
         1711979550,
     ]
-    msg = (
-        args.message
-        if args.message
-        else '⚪️КУПЛЮ⚪️\n🏦IziBANK - 200грн💳\n🏦MONOBANK - 300грн💳\n🏦Возьму на вериф PayPal, только те кто не делал, мануал даю и помогу пройти вериф, оплата 400грн💳\n☯️Отзывы в Био☯️\n✅Гарант+✅\n✍️ПИСАТЬ В ЛС✍️'
-    )
+    logging.info('sending messages starts now')
     for chat_id in chat_ids:
         try:
             await client.send_message(
                 chat_id,
-                msg,
+                args.message,
                 # "✅Куплю документы под pay pal✅\n✅Нужно фото айди или заграна и выписка из привата, моно или а банка на УКР языке✅\n✅Оплата 200грн✅\n✅НУЖНО МНОГО✅\n✅Писать в ЛС, отзывы в БИО✅",
             )
             print('sent to', chat_id)
         except Exception as e:
             print(str(e))
+            logging.error(f'{chat_id} - {str(e)}')
             # await client.send_message("me", str(e))
+        logging.info('sending messages is over')
 
 
 chat_list = [
