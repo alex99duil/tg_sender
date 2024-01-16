@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 from telethon import TelegramClient, errors
 from telethon.tl.functions.channels import JoinChannelRequest
+from dotenv import load_dotenv
 import logging
 import argparse
 import time
+import os
 
-api_id = 29652078
-api_hash = 'fe53fd4bb6dd5693234087137dcf69a6'
+load_dotenv()
+api_id = int(os.environ['api_id'])
+api_hash = os.environ['api_hash']
 
 parser = argparse.ArgumentParser(
     description='script for sending messages to groups in telegram'
