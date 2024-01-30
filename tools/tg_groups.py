@@ -1,4 +1,3 @@
-import re
 
 # from _dasxxko 10.08.23
 group1 = "\
@@ -260,8 +259,13 @@ https://t.me/cryptomasonlofficialotc \
 https://t.me/truveriff \
 "
 
-groups = group1 + group2 + group3 + group4
+chat_list = list(set((group1 + group2 + group3 + group4).split()))
 
-res = re.findall(r".me\/(\w+)", groups)
-print("lenght:", len(res))
-print(res)
+if __name__ == "__main__":
+    print(len(chat_list))
+    
+
+    # import re
+    # res = re.findall(r".me\/(\w+)", groups)
+    # print("lenght:", len(res))
+    # print(res)
