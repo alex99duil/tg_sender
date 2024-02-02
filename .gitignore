@@ -1,6 +1,0 @@
-env
-.env
-backup_user_ids.json
-__pycache__
-main_temp.py
-nohup.out
