@@ -8,8 +8,6 @@ select = [
     "W",
     # isort
     "I",
+    # pep8 naming
+    "N",
 ]
-
-[tool.ruff.format]
-indent-style = "tab"
-docstring-code-format = true
