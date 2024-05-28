@@ -9,9 +9,29 @@ from typing import LiteralString
 from dotenv import load_dotenv
 from telethon import TelegramClient, errors
 from telethon.tl.functions.channels import JoinChannelRequest
-from telethon.tl.types import Channel, InputChannel
+from telethon.tl.types import Channel, InputChannel, Message
 
 from tools.tg_groups import chat_list
+
+
+async def get_message_from_saved(client: TelegramClient) -> Message | None:
+    saved_messages_chat = await client.get_me()
+
+    # get latest message from "Saved Messages"
+    msg = await client.get_messages(saved_messages_chat, limit=1)
+    if not msg[0].message:
+        # print("No messages in Saved Messages")
+        logging.error(
+            "No message in Saved Messages! You must run the script with the -m key "
+            "or paste the message into “Saved messages"
+        )
+        # client.send_message() #@ok_nope about error
+        return None
+    else:
+        print(msg[0].message)
+        return msg[0].message
+        # await client.send_message('me', msg.message)
+    # await client.send_message('me', msg[0].message)
 
 
 async def move_chats_to_folder(client: TelegramClient, ids: list[int], folder_id: int = 1) -> None:
@@ -32,7 +52,6 @@ async def join_to_groups(client: TelegramClient, input_chats: list[LiteralString
             if url in input_chats:
                 input_chats.remove(url)
 
-    print(f"lenght of the list of group to join - {len(input_chats)}")  # 207 links
     logging.info(f"length of the list of groups to join - {len(input_chats)}")
 
     for chat in input_chats:
@@ -47,20 +66,17 @@ async def join_to_groups(client: TelegramClient, input_chats: list[LiteralString
                     JoinChannelRequest(InputChannel(entity_data.id, entity_data.access_hash))
                 )
                 ids.append(entity_data.id)
-                print(f"joined to {chat}")
+                logging.info(f"{chat} - joined successfully.")
             else:
-                logging.error(f"chat {chat} is not a group")
-                print(chat, "- is not a group.")
+                logging.error(f"{chat} - is not a group")
         except errors.FloodWaitError as e:
-            print("Have to sleep", e.seconds, "seconds")
-            logging.error(f"{chat} chat. have to sleep: {e.seconds}")
+            logging.error(f"{chat} - FloodWaitError. Have to sleep: {e.seconds} seconds")
             if ids:
                 await move_chats_to_folder(client, ids)  # while sleep move joined chats to archive
                 ids.clear()
             time.sleep(e.seconds)
         except Exception as e:
-            logging.error(f"{chat} chat: {e}")
-            print(chat, e)
+            logging.error(f"{chat}: {e}")
 
 
 async def send_message(client: TelegramClient, chats: list[LiteralString], message: str) -> None:
@@ -101,6 +117,11 @@ def get_arguments() -> argparse.ArgumentParser:
         action="store_true",
     )
     parser.add_argument(
+        "-g",
+        help="get latest message from saved messages",
+        action="store_true",
+    )
+    parser.add_argument(
         "-m",
         "--message",
         help="specify the message",
@@ -118,14 +139,17 @@ def get_arguments() -> argparse.ArgumentParser:
 def main(chats: list[LiteralString]) -> None:
     args = get_arguments().parse_args()
 
+    output_logger = logging.StreamHandler()
+    output_logger.setLevel("INFO")
+    output_logger.setFormatter(fmt=logging.Formatter(fmt="%(levelname)s: %(message)s"))
     logging.basicConfig(
         # filename=f'/tmp/{args.session}.log',
-        filename="/tmp/tg_sender.log",
-        # filemode='a',
-        format="%(asctime)s %(levelname)s %(message)s",
+        handlers=[logging.FileHandler("/tmp/tg_sender.log"), output_logger],
+        format="%(asctime)s %(levelname)s: %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
-        level=logging.INFO,
+        level=logging.DEBUG,
     )
+    logging.getLogger("telethon").setLevel(logging.WARNING)
 
     load_dotenv()
     client = TelegramClient(args.session, int(os.environ["api_id"]), os.environ["api_hash"])
@@ -135,6 +159,8 @@ def main(chats: list[LiteralString]) -> None:
             client.loop.run_until_complete(join_to_groups(client, chats))
         elif args.archive:
             client.loop.run_until_complete(move_chats_to_folder(client, []))
+        elif args.g:
+            client.loop.run_until_complete(get_message_from_saved(client))
         else:
             client.loop.run_until_complete(send_message(client, chats, args.message))
 
