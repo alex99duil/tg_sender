@@ -1,5 +1,5 @@
 # from _dasxxko 10.08.23
-group1 = "\
+group1 = '\
 https://t.me/otc_easymarket \
 https://t.me/OTC37 \
 https://t.me/terncrypto_otc \
@@ -108,10 +108,10 @@ https://t.me/coinlist_allcountry \
 https://t.me/web_investors \
 https://t.me/smartrubby \
 https://t.me/otc_marketcrypto\
-"
+'
 
 # from _dasxxko 09.09/10.08
-group2 = "\
+group2 = '\
 https://t.me/ObshchenieR\
 https://t.me/otc_Family \
 https://t.me/Swoptoky_exchange \
@@ -130,11 +130,11 @@ https://t.me/crypto_exclusiv1\
 https://t.me/chatiki0\
 https://t.me/verifyaccountcoin\
 https://t.me/no_scam_verification\
-"
+'
 
 # from tg group
 # https://t.me/c/1953560246/16
-group3 = "\
+group3 = '\
 https://t.me/chatsnumberone \
 https://t.me/Verification_Gold \
 https://t.me/hom3_ua_chat \
@@ -235,10 +235,10 @@ https://t.me/veriferchat \
 https://t.me/ncIGO_Bounty \
 https://t.me/cremindsverif \
 https://t.me/verifuachat \
-"
+'
 
 # https://t.me/c/1953560246/17
-group4 = "\
+group4 = '\
 https://t.me/p2pdropi \
 https://t.me/otcverifs \
 https://t.me/truveriff \
@@ -256,59 +256,59 @@ https://t.me/jobs1ualan \
 https://t.me/xstoran_verif \
 https://t.me/cryptomasonlofficialotc \
 https://t.me/truveriff \
-"
+'
 
 not_group = [
-    "https://t.me/coinlist_account1",
-    "https://t.me/btlvrfchat",
-    "https://t.me/legitbuyerii",
-    "https://t.me/icebergmarketotc",
-    "https://t.me/topclab_otc",
-    "https://t.me/nftotc66",
-    "https://t.me/wssn0wboyum0mdm",
-    "https://t.me/otc_nft_community",
-    "https://t.me/upholdallcountry",
-    "https://t.me/izicashchat",
-    "https://t.me/doubletop_otc",
-    "https://t.me/otzixuo",
-    "https://t.me/agraba_otc_chat",
-    "https://t.me/otc_marketgucci",
-    "https://t.me/otccryptonftvietnam",
-    "https://t.me/cryptootcc",
-    "https://t.me/tytopotcmarket",
-    "https://t.me/otc_marketcryptohttps://t.me/obshchenierhttps://t.me/otc_family",
-    "https://t.me/buyyercoinlist30",
-    "https://t.me/otccryptopushka",
-    "https://t.me/otc_wl_chat",
-    "https://t.me/otc_crypto_markt",
-    "https://t.me/otc_cryptonft",
-    "https://t.me/crpt_otc",
-    "https://t.me/jackk_chat",
-    "https://t.me/otctrust1",
-    "https://t.me/theotcroom",
-    "https://t.me/otc_narnia",
-    "https://t.me/otc_red",
-    "https://t.me/account_verification_chatt",
-    # "https://t.me/zarabotok_na_verifikaciyah0
-    #     https://t.me/veref_chat
-    #     https://t.me/prani_verify
-    #     https://t.me/arendaprodajabankcard
-    #     https://t.me/bdsverivication
-    #     https://t.me/verif_worrk
-    #     https://t.me/bossveref
-    #     https://t.me/crypto_exclusiv1
-    #     https://t.me/chatiki0
-    #     https://t.me/verifyaccountcoin
-    #     https://t.me/no_scam_verification
-    #     https://t.me/chatsnumberone",
+	'https://t.me/coinlist_account1',
+	'https://t.me/btlvrfchat',
+	'https://t.me/legitbuyerii',
+	'https://t.me/icebergmarketotc',
+	'https://t.me/topclab_otc',
+	'https://t.me/nftotc66',
+	'https://t.me/wssn0wboyum0mdm',
+	'https://t.me/otc_nft_community',
+	'https://t.me/upholdallcountry',
+	'https://t.me/izicashchat',
+	'https://t.me/doubletop_otc',
+	'https://t.me/otzixuo',
+	'https://t.me/agraba_otc_chat',
+	'https://t.me/otc_marketgucci',
+	'https://t.me/otccryptonftvietnam',
+	'https://t.me/cryptootcc',
+	'https://t.me/tytopotcmarket',
+	'https://t.me/otc_marketcryptohttps://t.me/obshchenierhttps://t.me/otc_family',
+	'https://t.me/buyyercoinlist30',
+	'https://t.me/otccryptopushka',
+	'https://t.me/otc_wl_chat',
+	'https://t.me/otc_crypto_markt',
+	'https://t.me/otc_cryptonft',
+	'https://t.me/crpt_otc',
+	'https://t.me/jackk_chat',
+	'https://t.me/otctrust1',
+	'https://t.me/theotcroom',
+	'https://t.me/otc_narnia',
+	'https://t.me/otc_red',
+	'https://t.me/account_verification_chatt',
+	# "https://t.me/zarabotok_na_verifikaciyah0
+	#     https://t.me/veref_chat
+	#     https://t.me/prani_verify
+	#     https://t.me/arendaprodajabankcard
+	#     https://t.me/bdsverivication
+	#     https://t.me/verif_worrk
+	#     https://t.me/bossveref
+	#     https://t.me/crypto_exclusiv1
+	#     https://t.me/chatiki0
+	#     https://t.me/verifyaccountcoin
+	#     https://t.me/no_scam_verification
+	#     https://t.me/chatsnumberone",
 ]
 
 chat_list = list(set((group1 + group2 + group3 + group4).lower().split()))
 
-if __name__ == "__main__":
-    print(len(chat_list))
+if __name__ == '__main__':
+	print(len(chat_list))
 
-    # import re
-    # res = re.findall(r".me\/(\w+)", groups)
-    # print("lenght:", len(res))
-    # print(res)
+	# import re
+	# res = re.findall(r".me\/(\w+)", groups)
+	# print("lenght:", len(res))
+	# print(res)

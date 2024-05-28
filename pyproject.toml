@@ -1,7 +1,15 @@
 [tool.ruff]
 line-length = 100
+select = [
+    # Pyflakes
+    "F",
+    # Pycodestyle
+    "E",
+    "W",
+    # isort
+    "I",
+]
 
 [tool.ruff.format]
-quote-style = "single"
 indent-style = "tab"
 docstring-code-format = true
