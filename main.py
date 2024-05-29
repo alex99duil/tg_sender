@@ -20,37 +20,40 @@ async def get_message_from_saved(client: TelegramClient) -> Message | None:
     # get latest message from "Saved Messages"
     msg = await client.get_messages(saved_messages_chat, limit=1)
     if not msg[0].message:
-        # print("No messages in Saved Messages")
         logging.error(
-            "No message in Saved Messages! You must run the script with the -m key "
-            "or paste the message into “Saved messages"
+            "There is no message in Saved Messages! You must run the script with the -m option "
+            "or paste the message into \"Saved Messages\""
         )
         # client.send_message() #@ok_nope about error
         return None
     else:
         print(msg[0].message)
         return msg[0].message
-        # await client.send_message('me', msg.message)
     # await client.send_message('me', msg[0].message)
 
 
 async def move_chats_to_folder(client: TelegramClient, ids: list[int], folder_id: int = 1) -> None:
     async for dialog in client.iter_dialogs(folder=0):  # get all dialogs not in archive
-        if isinstance(dialog.entity, Channel) and dialog.entity.megagroup is True:
-            if dialog.entity.id in ids:
-                await dialog.archive(folder=folder_id)  # move chat to folder
+        # if isinstance(dialog.entity, Channel) and dialog.entity.megagroup is True:
+        if dialog.entity.id in ids:
+            await dialog.archive(folder=folder_id)
 
 
-async def join_to_groups(client: TelegramClient, input_chats: list[LiteralString]) -> None:
-    # dialogs = await client.get_dialogs()  # get all dialogs
+async def join_to_groups(
+    client: TelegramClient, input_chats: list[LiteralString], archive: bool = False
+) -> None:
     ids: list[int] = []  # a list of group id's to which client have joined
 
     async for dialog in client.iter_dialogs():
         # if the user has already joined, removes the group from the list
-        if isinstance(dialog.entity, Channel):  # and dialog.entity.username != None:
+        if isinstance(dialog.entity, Channel) and dialog.entity.username is not None:
             url = f"https://t.me/{dialog.entity.username}".lower()
-            if url in input_chats:
-                input_chats.remove(url)
+            for chat in input_chats:
+                if url == chat:
+                    input_chats.remove(chat)
+
+            # if url in input_chats:
+            #     input_chats.remove(url)
 
     logging.info(f"length of the list of groups to join - {len(input_chats)}")
 
@@ -67,28 +70,29 @@ async def join_to_groups(client: TelegramClient, input_chats: list[LiteralString
                 )
                 ids.append(entity_data.id)
                 logging.info(f"{chat} - joined successfully.")
+                if archive:
+                    await move_chats_to_folder(client, [entity_data.id])  # move chat to folder
+                    logging.debug("Moved to archive!")
             else:
                 logging.error(f"{chat} - is not a group")
         except errors.FloodWaitError as e:
             logging.error(f"{chat} - FloodWaitError. Have to sleep: {e.seconds} seconds")
-            if ids:
-                await move_chats_to_folder(client, ids)  # while sleep move joined chats to archive
-                ids.clear()
+            # if ids:
+            #     await move_chats_to_folder(client, ids)  #while sleep move joined chats to archive
+            #     ids.clear()
             time.sleep(e.seconds)
         except Exception as e:
-            logging.error(f"{chat}: {e}")
+            logging.critical(f"{chat}: {e}")
 
 
 async def send_message(client: TelegramClient, chats: list[LiteralString], message: str) -> None:
-    logging.info("sending messages starts now")
+    logging.info("-----sending messages starts now-----")
     for chat in chats:
         try:
             await client.send_message(chat, message)
             print("sent to", chat)
         except Exception as e:
-            print(str(e))
-            logging.error(f"{chat} - {str(e)}")
-            # await client.send_message("me", str(e)) #send log to saved messages.
+            logging.error(f"send to {chat} - {str(e)}")
     logging.info("sending messages has finished")
 
 
@@ -117,6 +121,7 @@ def get_arguments() -> argparse.ArgumentParser:
         action="store_true",
     )
     parser.add_argument(
+        "--get_message",
         "-g",
         help="get latest message from saved messages",
         action="store_true",
@@ -156,10 +161,13 @@ def main(chats: list[LiteralString]) -> None:
 
     with client:
         if args.join:
-            client.loop.run_until_complete(join_to_groups(client, chats))
+            if args.archive:
+                client.loop.run_until_complete(join_to_groups(client, chats, True))
+            else:
+                client.loop.run_until_complete(join_to_groups(client, chats))
         elif args.archive:
             client.loop.run_until_complete(move_chats_to_folder(client, []))
-        elif args.g:
+        elif args.get_message:
             client.loop.run_until_complete(get_message_from_saved(client))
         else:
             client.loop.run_until_complete(send_message(client, chats, args.message))
